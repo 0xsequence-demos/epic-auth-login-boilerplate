@@ -1,6 +1,6 @@
-# Embedded Wallet React Boilerplate
+# Embedded Wallet with Epic Login
 
-Starter Sequence Embedded Wallet boilerplate that uses [Sequence Embedded Wallet](https://docs.sequence.xyz/solutions/wallets/embedded-wallet/overview) with React.
+Sequence starter with Epic Auth Login [Sequence Embedded Wallet](https://docs.sequence.xyz/solutions/wallets/embedded-wallet/overview) and a cloudflare worker to instantiate the session with Epic and receive a callback.
 
 ## Quickstart
 
