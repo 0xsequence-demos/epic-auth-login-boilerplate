@@ -60,7 +60,7 @@ function App() {
          setError(null); // Clear previous errors
          try {
            // Attempt to get the current session without triggering UI
-           const session = await sequenceWaas.getSessionId();
+           const session = await sequenceWaas.listSessions();
            if (session) {
              console.log("Found existing Sequence session:", session);
              const walletAddress = await sequenceWaas.getAddress()
