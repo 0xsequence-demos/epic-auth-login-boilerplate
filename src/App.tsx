@@ -10,6 +10,23 @@ function App() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [jwtToken, setJwtToken] = useState('')
+
+
+  const handleJwtLogin = async () => {
+    try {
+      const res = await sequenceWaas.signIn(
+        {
+          idToken: jwtToken,
+        },
+        'Generic OIDC Embedded Wallet React Boilerplate'
+      );
+
+      setWalletAddress(res.wallet);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   // UseEffect to handle the redirect back from the worker
   useEffect(() => {
@@ -106,9 +123,41 @@ function App() {
   return (
     <>
       <h1 className='title'>Embedded Wallet - Epic Games Auth</h1>
+      
       <div style={{ position: 'fixed', top: '60px', right: '60px' }}>
         {walletAddress && <p style={{ cursor: 'pointer' }} onClick={() => signOut()}>Sign Out</p>}
       </div>
+
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '20vh',
+        margin: 'auto',
+        gap: '1rem'
+    }}>
+      {!walletAddress && (
+        <>
+          <textarea
+            value={jwtToken}
+            onChange={(e) => setJwtToken(e.target.value)}
+            placeholder="Enter your JWT token here"
+            style={{
+              width: '400px',
+              height: '100px',
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc'
+            }}
+          />
+          <button onClick={handleJwtLogin}>Sign In with JWT</button>
+        </>
+      )}
+      <p>{walletAddress}</p>
+    </div>
+
+
       <div style={{
         display: 'flex',
         flexDirection: 'column', // Stack items vertically

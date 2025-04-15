@@ -17,6 +17,9 @@ importers:
       '@react-oauth/google':
         specifier: ^0.12.1
         version: 0.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      google-embedded-wallet-react-boilerplate:
+        specifier: 'link:'
+        version: 'link:'
       react:
         specifier: ^18.3.1
         version: 18.3.1

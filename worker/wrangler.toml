@@ -15,4 +15,4 @@ REDIRECT_URI = "https://epic-eos-auth-worker.tpin.workers.dev/callback"
 
 # The URL of your frontend application where the worker will redirect upon successful login
 # Use http://localhost:4444 for local development
-FRONTEND_URL = "http://localhost:4444" 
+FRONTEND_URL = "https://epic-auth-login-boilerplate.pages.dev/" 
