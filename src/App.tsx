@@ -80,40 +80,6 @@ function App() {
     }
   }, []); // Run only once on component mount
 
-  // Function to handle sending a transaction
-  const handleSendTransaction = async () => {
-    if (!walletAddress) {
-      setError('Wallet address not found. Please sign in.');
-      return;
-    }
-    setIsLoading(true);
-    setError(null);
-    try {
-
-      const walletAddress = sequenceWaas.getAddress()
-      
-
-      const txResponse = await sequenceWaas.sendTransaction({
-        transactions: [
-          {
-            to: walletAddress,
-            value: "0",
-          },
-        ],
-        network: 42170,
-      });
-
-
-      console.log('Transaction sent:', txResponse);
-      alert(`Transaction successful! Hash: ${txResponse}`); // Simple feedback
-
-    } catch (err: any) {
-      console.error("Transaction failed:", err);
-      setError(`Transaction failed: ${err.message || 'Unknown error'}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   const signOut = async () => {
     try {
@@ -179,6 +145,9 @@ function App() {
           <div>
             <p>Signed in!</p>
             <p>Wallet Address: {walletAddress}</p>
+            <button onClick={signOut} disabled={isLoading} style={{ marginLeft: '10px' }}>
+              {isLoading ? 'Signing Out...' : 'Sign Out'}
+            </button>
             {/* You might want to display Epic Games user info here too if needed */}
           </div>
         )}
