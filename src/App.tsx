@@ -142,9 +142,6 @@ function App() {
     <>
       <h1 className='title'>Embedded Wallet - Epic Games Auth</h1>
       
-      <div style={{ position: 'fixed', top: '60px', right: '60px' }}>
-        {walletAddress && <p style={{ cursor: 'pointer' }} onClick={() => signOut()}>Sign Out</p>}
-      </div>
 
       <div style={{
         display: 'flex',
@@ -154,7 +151,6 @@ function App() {
         margin: 'auto',
         gap: '1rem'
     }}>
-      <p>{walletAddress}</p>
     </div>
 
 
@@ -183,9 +179,6 @@ function App() {
           <div>
             <p>Signed in!</p>
             <p>Wallet Address: {walletAddress}</p>
-            <button onClick={handleSendTransaction} disabled={isLoading} style={{ marginTop: '10px' }}>
-              {isLoading ? 'Sending...' : 'Send Transaction'}
-            </button>
             {/* You might want to display Epic Games user info here too if needed */}
           </div>
         )}
