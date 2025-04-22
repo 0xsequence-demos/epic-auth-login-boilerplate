@@ -94,13 +94,13 @@ function App() {
       
 
       const txResponse = await sequenceWaas.sendTransaction({
-        network: 42161,
         transactions: [
           {
             to: walletAddress,
             value: "0",
           },
         ],
+        network: 42170,
       });
 
 
