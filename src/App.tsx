@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { sequenceWaas } from "./SequenceEmbeddedWallet";
-import { ethers } from 'ethers'
 
 import './App.css'
 
@@ -11,7 +10,6 @@ function App() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  const [jwtToken, setJwtToken] = useState('')
 
 
   // UseEffect to handle the redirect back from the worker
