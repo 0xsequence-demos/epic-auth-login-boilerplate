@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { sequenceWaas } from "./SequenceEmbeddedWallet";
+import { ethers } from 'ethers'
 
 import './App.css'
 
@@ -12,21 +13,6 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [jwtToken, setJwtToken] = useState('')
 
-
-  const handleJwtLogin = async () => {
-    try {
-      const res = await sequenceWaas.signIn(
-        {
-          idToken: jwtToken,
-        },
-        'Generic OIDC Embedded Wallet React Boilerplate'
-      );
-
-      setWalletAddress(res.wallet);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   // UseEffect to handle the redirect back from the worker
   useEffect(() => {
@@ -96,6 +82,40 @@ function App() {
     }
   }, []); // Run only once on component mount
 
+  // Function to handle sending a transaction
+  const handleSendTransaction = async () => {
+    if (!walletAddress) {
+      setError('Wallet address not found. Please sign in.');
+      return;
+    }
+    setIsLoading(true);
+    setError(null);
+    try {
+
+      const walletAddress = sequenceWaas.getAddress()
+      
+
+      const txResponse = await sequenceWaas.sendTransaction({
+        network: 42161,
+        transactions: [
+          {
+            to: walletAddress,
+            value: "0",
+          },
+        ],
+      });
+
+
+      console.log('Transaction sent:', txResponse);
+      alert(`Transaction successful! Hash: ${txResponse}`); // Simple feedback
+
+    } catch (err: any) {
+      console.error("Transaction failed:", err);
+      setError(`Transaction failed: ${err.message || 'Unknown error'}`);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const signOut = async () => {
     try {
@@ -133,27 +153,9 @@ function App() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '20vh',
         margin: 'auto',
         gap: '1rem'
     }}>
-      {!walletAddress && (
-        <>
-          <textarea
-            value={jwtToken}
-            onChange={(e) => setJwtToken(e.target.value)}
-            placeholder="Enter your JWT token here"
-            style={{
-              width: '400px',
-              height: '100px',
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc'
-            }}
-          />
-          <button onClick={handleJwtLogin}>Sign In with JWT</button>
-        </>
-      )}
       <p>{walletAddress}</p>
     </div>
 
@@ -161,10 +163,9 @@ function App() {
       <div style={{
         display: 'flex',
         flexDirection: 'column', // Stack items vertically
-        justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '20vh', // Use minHeight
         margin: 'auto',
+        marginTop: '20px', // Add some top margin for spacing
         gap: '20px' // Add some space between elements
       }}>
         {isLoading && <p>Loading...</p>}
@@ -172,14 +173,21 @@ function App() {
 
         {!walletAddress && !isLoading && (
           // Replace GoogleLogin with a link to the worker login
-          <a href={workerLoginUrl} className="login-button"> {/* Add a class for styling */}
-            Login with Epic Games
+          <a href={workerLoginUrl} className="login-button" aria-label="Login with Epic Games"> {/* Add aria-label for accessibility */}
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" 
+              alt="Epic Games Logo" 
+              style={{ width: '32px', height: '32px' }} // Adjust size as needed
+            />
           </a>
         )}
         {walletAddress && (
           <div>
             <p>Signed in!</p>
             <p>Wallet Address: {walletAddress}</p>
+            <button onClick={handleSendTransaction} disabled={isLoading} style={{ marginTop: '10px' }}>
+              {isLoading ? 'Sending...' : 'Send Transaction'}
+            </button>
             {/* You might want to display Epic Games user info here too if needed */}
           </div>
         )}
